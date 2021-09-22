@@ -10,10 +10,10 @@ const element = React.createElement('ul', {className: 'ul'}, elementLi)
 
 ReactDOM.render(element, document.getElementById('root'));
 
-// ReactDOM.render(
-//   <React.StrictMode>
-//     <App />
-//   </React.StrictMode>,
-//   document.getElementById('root')
-// );
+ReactDOM.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+  document.getElementById('root')
+);
 
