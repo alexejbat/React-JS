@@ -23,7 +23,7 @@ function App() {
           Learn React
         </a>
       </header>
-      <Message tag={'h3'} disabled={true}>
+      <Message tag={'h4'} disabled={true}>
           Привет! Меня зовут Алексей, я начинаю изучать React.js!
       </Message>
       <ListGroup>
