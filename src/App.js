@@ -1,41 +1,50 @@
-import logo from './logo.svg';
-import styles from './App.module.css';
-import {ListGroup} from './components/ListGroup'
-import {ListGroupItem} from './components/ListGroupItem'
-import {Message} from './components/Message'
+import {RefExample} from "./examples/RefExample";
+import {Layout} from "./components/Layout";
+import faker from 'faker';
+import {AlbumItem} from "./components/AlbumItem";
+import {AlbumList} from "./components/AlbumList";
+import {useEffect, useMemo, useState} from "react";
 
-console.log(styles)
+
+const createAlbumItem = () => ({
+  id: faker.datatype.uuid(),
+  title: faker.animal.cat(),
+  description:faker.lorem.paragraph(),
+  image: {
+    id: faker.datatype.uuid(),
+    src: faker.image.animals(),
+    alt: faker.animal.cat(),
+  }
+})
+
+const list = Array.from({length: 10}).map(createAlbumItem)
 
 function App() {
+
+
+  const [items, setItems] = useState(list);
+
+  const addItems = () => {
+    const newItems = [...items];
+    newItems.push(createAlbumItem());
+
+    setItems(newItems)
+  }
+
   return (
-    <div className={styles.app}>
-      <header className="App-header">
-        <img src={logo} className={styles.appLogo} alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-      <Message tag={'h4'} disabled={true}>
-          Привет! Меня зовут Алексей, я начинаю изучать React.js!
-      </Message>
-      <ListGroup>
-        <ListGroupItem tag={'a'} active={true}>
-          item 1
-        </ListGroupItem>
-        <ListGroupItem disabled={true}>
-          item 2
-        </ListGroupItem>
-      </ListGroup>
-    </div>
-  );
+    <Layout>
+
+    <RefExample/>
+
+      <button onClick={addItems}>
+        Добавить в корзину
+      </button>
+      <AlbumList list={items}/>
+
+    </Layout> 
+    );
+   
+  
 }
 
 export default App;
