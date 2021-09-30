@@ -5,6 +5,7 @@ import {AlbumItem} from "./components/AlbumItem";
 import {AlbumList} from "./components/AlbumList";
 import {useEffect, useMemo, useState} from "react";
 
+
 const createAlbumItem = () => ({
   id: faker.datatype.uuid(),
   title: faker.animal.cat(),
@@ -32,13 +33,14 @@ function App() {
 
   return (
     <Layout>
+
+    <RefExample/>
+
       <button onClick={addItems}>
         Добавить в корзину
       </button>
       <AlbumList list={items}/>
 
-      <RefExample/>
-      
     </Layout> 
     );
    

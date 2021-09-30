@@ -1,4 +1,5 @@
 import React, {useEffect, useRef} from 'react';
+import faker from 'faker';
 import '@splidejs/splide/dist/css/splide-core.min.css';
 import '@splidejs/splide/dist/css/splide.min.css';
 import '@splidejs/splide/dist/css/themes/splide-sea-green.min.css';
@@ -19,7 +20,7 @@ export const RefExample = () => {
     <div ref={sliderContainer} className="splide">
       <div className="splide__track">
         <ul className="splide__list">
-          <li className="splide__slide">Slide 01</li>
+          <li className="splide__slide">{faker.image.animals(480) }</li>
           <li className="splide__slide">Slide 02</li>
           <li className="splide__slide">Slide 03</li>
         </ul>

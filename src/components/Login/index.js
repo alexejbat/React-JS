@@ -28,9 +28,8 @@ export const Login = ({
     >
       <Box
         sx={style}
-        autoFocus={true}
       >
-        <Typography component="h1" variant="h5">
+        <Typography component="h1" variant="h5" autofocus="true">
           Войти
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
