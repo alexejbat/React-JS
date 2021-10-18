@@ -1,50 +1,108 @@
-import {RefExample} from "./examples/RefExample";
-import {Layout} from "./components/Layout";
-import faker from 'faker';
-import {AlbumItem} from "./components/AlbumItem";
-import {AlbumList} from "./components/AlbumList";
-import {useEffect, useMemo, useState} from "react";
+import React from "react";
+import "./App.css";
 
-
-const createAlbumItem = () => ({
-  id: faker.datatype.uuid(),
-  title: faker.animal.cat(),
-  description:faker.lorem.paragraph(),
-  image: {
-    id: faker.datatype.uuid(),
-    src: faker.image.animals(),
-    alt: faker.animal.cat(),
-  }
-})
-
-const list = Array.from({length: 10}).map(createAlbumItem)
-
-function App() {
-
-
-  const [items, setItems] = useState(list);
-
-  const addItems = () => {
-    const newItems = [...items];
-    newItems.push(createAlbumItem());
-
-    setItems(newItems)
+export class AppClass extends React.Component {
+  constructor(props) {
+    super(props);
+    console.log("constructor");
+    this.state = {
+      count: 0,
+    };
+    // this.foo = this.foo.bind(this);
   }
 
-  return (
-    <Layout>
+  static getDerivedStateFromProps(props, state) {
+    console.log("getDerivedStateFromProps");
+    // return {
+    //   id: "test",
+    // };
 
-    <RefExample/>
+    return null;
+  }
 
-      <button onClick={addItems}>
-        Добавить в корзину
-      </button>
-      <AlbumList list={items}/>
+  test = () => {
+    console.log("test");
+  };
 
-    </Layout> 
+  // синхронный
+  componentDidMount() {
+    // запросы
+    // работа с ДОМ
+    // подписки
+    // мутации
+    // таймеры
+    // обновление состояния
+    console.log("componentDidMount");
+    this.handleClick();
+
+    document.addEventListener("click", this.test);
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log("shouldComponentUpdate");
+    // if (nextProps.count === this.props.count) {
+    //   return false;
+    // }
+
+    return true;
+  }
+
+  getSnapshotBeforeUpdate(prevProps, prevState) {
+    console.log("getSnapshotBeforeUpdate");
+    // return null
+    return {
+      position: "300px",
+    };
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    console.log("componentDidUpdate", snapshot);
+    // запросы
+    // работа с ДОМ
+    // подписки
+    // мутации
+    // таймеры
+    // обновление состояния
+
+    if (prevState.count === 3) {
+      this.handleClick();
+    }
+  }
+
+  handleClick = () => {
+    this.setState(
+      (state) => ({ ...state, count: state.count + 1 })
+      // () => {
+      //   console.log("update", this.state);
+      // }
     );
-   
-  
-}
+    // this.forceUpdate();
+    // updater
+    // {}
+    // (state) => ({})
 
-export default App;
+    // callback () => {}
+  };
+
+  componentWillUnmount() {
+    // удалять таймеры
+    // делать отписки
+    // очищать состояние
+    console.log("componentWillUnmount");
+    document.removeEventListener("click", this.test);
+  }
+
+  render() {
+    // this.props
+    const { name } = this.props;
+    const { count } = this.state;
+
+    console.log("render", this.state);
+
+    return (
+      <div className="App" onClick={this.handleClick}>
+        AppClass {count}
+      </div>
+    );
+  }
+}

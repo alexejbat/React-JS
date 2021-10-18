@@ -1,19 +1,31 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+import ReactDOM from "react-dom";
+import { BrowserRouter, Route, Switch, Link } from "react-router-dom";
+import { ThemeProvider, createTheme } from "@mui/material";
+import React from "react";
+import { ChatPage } from "./pages";
+// import { TestRoute } from "./components/test-route";
+import "./global.css";
 
-const elementLi = React.createElement('li', {className: 'li'}, ' element')
-
-const element = React.createElement('ul', {className: 'ul'}, elementLi)
-
-
-ReactDOM.render(element, document.getElementById('root'));
+const light = createTheme({
+  theme: {
+    color: "red",
+  },
+});
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+  <BrowserRouter>
+    <ThemeProvider theme={light}>
+      <Switch>
+        <Route path="/chat">
+          <ChatPage />
+        </Route>
 
+        <Route path="*">
+          <h1>404 page</h1>
+          <Link to="/chat">go to Chat</Link>
+        </Route>
+      </Switch>
+    </ThemeProvider>
+  </BrowserRouter>,
+  document.getElementById("root")
+);
