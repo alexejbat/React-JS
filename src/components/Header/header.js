@@ -1,9 +1,19 @@
 import { useContext } from "react";
+import { Link } from "react-router-dom";
 import styles from "./header.module.css";
 import { ThemeContext } from "../../contexts";
 import React from "react";
 
-export const Header = (props) => {
+const Menu = () => {
+  return (
+    <div>
+      <Link to="/chat">Chat</Link>
+      <Link to="/profile">Profile</Link>
+    </div>
+  );
+};
+
+export const Header = () => {
   const {
     themeSetter,
     theme: { theme },
@@ -11,7 +21,7 @@ export const Header = (props) => {
 
   return (
     <div className={styles.header} style={{ background: theme.color }}>
-      <div>header</div>
+      <Menu />
       <button onClick={() => themeSetter("light")}>light</button>
       <button onClick={() => themeSetter("dark")}>dark</button>
     </div>
