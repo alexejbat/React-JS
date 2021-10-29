@@ -8,9 +8,8 @@ export const ChatList = () => {
   const params = useParams();
   const conversations = useSelector(conversationsSelector);
   const dispatch = useDispatch();
-
   const createConversationWithName = () => {
-    const title = prompt("введите название беседы:");
+    const title = prompt("Введите название беседы:");
 
     if (title) {
       dispatch(createConversation(title));

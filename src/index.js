@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Switch, Link } from "react-router-dom";
 import { createTheme } from "@mui/material";
 import { CustomThemeProvider } from "./contexts";
 import React from "react";
-import { ChatPage } from "./pages";
+import { ProfilePage } from "./pages";
 import { store } from "./store";
 import "./global.css";
 
@@ -28,10 +28,10 @@ const App = () => {
         <CustomThemeProvider themes={themes} initialTheme="light">
           <Switch>
             <Route path="/chat">
-              <ChatPage />
+              <ChatPage/>
             </Route>
-
-            <Route path="*">
+            <Route path="/profile">
+              <ChatPage/>
               <h1>404</h1>
               <Link to="/chat">go to Chat</Link>
             </Route>

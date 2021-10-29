@@ -6,10 +6,7 @@ import { conversationsSelector } from "../store/conversations";
 
 export function ProfilePage(props) {
   const [count, setCount] = useState(0);
-
   const memoSelector = useMemo(() => conversationsSelector(props), [props]);
-
-
   const { firstName, lastName, isVisibleProfile } =
     useSelector(profileSelector);
   const countFromRedux = useSelector(memoSelector);
@@ -19,16 +16,13 @@ export function ProfilePage(props) {
   return (
     <div>
       <Header />
-
       <button onClick={() => dispatch(toggleShowProfile())}>
         toggle profile
       </button>
-
       <button onClick={() => setCount(count + 1)}>setCount {count}</button>
       <button onClick={() => dispatch({ type: "INCREMENT" })}>
         set countFromRedux {countFromRedux}
       </button>
-
       {isVisibleProfile && (
         <>
           <h1>firstName: {firstName}</h1>
