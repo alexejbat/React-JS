@@ -3,7 +3,7 @@ import { Input, InputAdornment } from "@mui/material";
 import { Send } from "@mui/icons-material";
 import { createStyles, makeStyles } from "@mui/styles";
 import { handleChangeMessageValue, messageValueSelector } from "../../store/conversations";
-import { messagesSelector } from "../../store/messages";
+import { messagesSelector, sendMessageWithThunk } from "../../store/messages";
 import { Message } from "./message";
 import styles from "./message-list.module.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,15 +19,15 @@ const useStyles = makeStyles((ctx) => {
   });
 });
 
-export const MessageList = ({ messages, sendMessage }) => {
+export const MessageList = () => {
   const s = useStyles();
   const { roomId } = useParams();
   const messageValue = useMemo(() => messageValueSelector(roomId), [roomId]);
   const dispatch = useDispatch();
   const value = useSelector(messageValue);
   const handlePressInput = ({ code }) => {
-    if (code === "Enter" && value) {
-      sendMessage({ value, author: "User" });
+    if (code === "Enter") {
+      handlesendMessage();
     }
   };
   const messages = useSelector(messagesSelector(roomId));
