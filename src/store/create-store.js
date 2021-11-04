@@ -6,6 +6,9 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { messagesReducer } from "./messages";
 import { logger, botSendMessage, crashReporter, timeScheduler } from "./midelwares";
+import { getGistsApi, searchGistsByUserNameApi } from "../api";
+import { gistsReducer } from "./gists";
+import { logger, botSendMessage, crashReporter, timeScheduler } from "./midelwares";
 
 const persistConfig = {
   key: "root",
@@ -20,6 +23,7 @@ const persistreducer = persistReducer(
     profile: profileReducer,
     conversations: conversationsReducer,
     messages: messagesReducer,
+    gists: gistsReducer,
   })
 );
 
@@ -29,7 +33,7 @@ export const store = createStore(
     applyMiddleware(
       timeScheduler,
       crashReporter,
-      thunk,
+      thunk.withExtraArgument({ getGistsApi, searchGistsByUserNameApi }),
       logger,
       botSendMessage
     ),

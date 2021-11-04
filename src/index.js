@@ -4,9 +4,10 @@ import { BrowserRouter, Route, Switch, Link } from "react-router-dom";
 import { createTheme } from "@mui/material";
 import { CustomThemeProvider } from "./contexts";
 import React from "react";
-import { ProfilePage } from "./pages";
+import { ProfilePage, GistsPage, ChatPage } from "./pages";
 import { store } from "./store";
 import "./global.css";
+import { PersistGate } from "redux-persist/integration/react";
 
 const themes = {
   light: createTheme({
@@ -24,20 +25,22 @@ const themes = {
 const App = () => {
   return (
     <Provider store={store}>
-      <BrowserRouter>
-        <CustomThemeProvider themes={themes} initialTheme="light">
-          <Switch>
-            <Route path="/chat">
-              <ChatPage/>
-            </Route>
-            <Route path="/profile">
-              <ChatPage/>
-              <h1>404</h1>
-              <Link to="/chat">go to Chat</Link>
-            </Route>
-          </Switch>
-        </CustomThemeProvider>
-      </BrowserRouter>
+      <PersistGate loading={null} persistor={persistor}>
+        <BrowserRouter>
+          <CustomThemeProvider themes={themes} initialTheme="light">
+            <Switch>
+              <Route path="/chat">
+                <ChatPage/>
+              </Route>
+              <Route path="/profile">
+                <ChatPage/>
+                <h1>404</h1>
+                <Link to="/chat">go to Chat</Link>
+              </Route>
+            </Switch>
+          </CustomThemeProvider>
+        </BrowserRouter>
+      </PersistGate> 
     </Provider>
   );
 };

@@ -1,5 +1,4 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Header } from "../components";
 import { toggleShowProfile, profileSelector } from "../store/profile";
 
 
