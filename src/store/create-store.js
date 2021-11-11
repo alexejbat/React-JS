@@ -6,9 +6,10 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { messagesReducer } from "./messages";
 import { logger, botSendMessage, crashReporter, timeScheduler } from "./midelwares";
-import { getGistsApi, searchGistsByUserNameApi } from "../api";
+import { getGistsApi, searchGistsByUserNameApi, getMessagesApi, senMessageApi, getConversationsApi } from "../api";
 import { gistsReducer } from "./gists";
 import { logger, botSendMessage, crashReporter, timeScheduler } from "./midelwares";
+import { sessionReducer } from "./session";
 
 const persistConfig = {
   key: "root",
@@ -17,27 +18,34 @@ const persistConfig = {
   whitelist: ["profile", "conversations"],
 };
 
-const persistreducer = persistReducer(
-  persistConfig,
-  combineReducers({
-    profile: profileReducer,
-    conversations: conversationsReducer,
-    messages: messagesReducer,
-    gists: gistsReducer,
-  })
-);
+export const reducer = combineReducers({
+  profile: profileReducer,
+  conversations: conversationsReducer,
+  messages: messagesReducer,
+  gists: gistsReducer,
+  session: sessionReducer,
+});
+
+const persistreducer = persistReducer(persistConfig, reducer);
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 export const store = createStore(
   persistreducer,
-  compose(
+  composeEnhancers(
     applyMiddleware(
       timeScheduler,
       crashReporter,
-      thunk.withExtraArgument({ getGistsApi, searchGistsByUserNameApi }),
+      thunk.withExtraArgument({
+        getGistsApi,
+        searchGistsByUserNameApi,
+        getMessagesApi,
+        senMessageApi,
+        getConversationsApi,
+      }),
       logger,
       botSendMessage
-    ),
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    )
   )
 );
 

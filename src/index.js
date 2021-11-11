@@ -5,9 +5,13 @@ import { createTheme } from "@mui/material";
 import { CustomThemeProvider } from "./contexts";
 import React from "react";
 import { ProfilePage, GistsPage, ChatPage } from "./pages";
-import { store } from "./store";
+import { store, persistor, } from "./store";
 import "./global.css";
 import { PersistGate } from "redux-persist/integration/react";
+import React, { useEffect } from "react";
+import { ChatPage, ProfilePage, GistsPage, SignUpPage, LoginPage, } from "./pages";
+import { Header, PrivateRoute, PublicRoute } from "./components";
+import { sessionSelector, onAuthStateChanged } from "./store/session";
 
 const themes = {
   light: createTheme({
@@ -23,26 +27,55 @@ const themes = {
 };
 
 const App = () => {
+  const session = useSelector(sessionSelector);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(onAuthStateChanged());
+  }, [dispatch]);
+
+  const isAuth = !!session?.email;
+
   return (
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <BrowserRouter>
-          <CustomThemeProvider themes={themes} initialTheme="light">
-            <Switch>
-              <Route path="/chat">
-                <ChatPage/>
-              </Route>
-              <Route path="/profile">
-                <ChatPage/>
-                <h1>404</h1>
-                <Link to="/chat">go to Chat</Link>
-              </Route>
-            </Switch>
-          </CustomThemeProvider>
-        </BrowserRouter>
-      </PersistGate> 
-    </Provider>
+    <>
+      <Header session={session} />
+
+      <Switch>
+        <PrivateRoute path="/chat" isAuth={isAuth}>
+          <ChatPage />
+        </PrivateRoute>
+        <PrivateRoute path="/profile" isAuth={isAuth}>
+          <ProfilePage />
+        </PrivateRoute>
+        <PrivateRoute path="/gists" isAuth={isAuth}>
+          <GistsPage />
+        </PrivateRoute>
+
+        <PublicRoute path="/login" isAuth={isAuth} to="/chat">
+          <LoginPage />
+        </PublicRoute>
+        <PublicRoute path="/sign-up" isAuth={isAuth} to="/chat">
+          <SignUpPage />
+        </PublicRoute>
+
+        <Route path="*">
+          <h1>404 page</h1>
+          <Link to="/chat">go to Chat</Link>
+        </Route>
+      </Switch>
+    </>
   );
 };
 
-ReactDOM.render(<App />, document.getElementById("root"));
+ReactDOM.render(
+  <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
+      <BrowserRouter>
+        <CustomThemeProvider themes={themes} initialTheme="light">
+          <App />
+        </CustomThemeProvider>
+      </BrowserRouter>
+    </PersistGate>
+  </Provider>,
+  document.getElementById("root")
+);

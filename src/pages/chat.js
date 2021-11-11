@@ -1,15 +1,14 @@
 import { useEffect } from "react";
 import { Route, Switch, useHistory } from "react-router-dom";
-import {
-  Header,
-  MessageList,
-  MainTemplate,
-  ChatList,
-} from "../components";
+import { useDispatch } from "react-redux";
+import { MessageList, MainTemplate, ChatList } from "../components";
+import { getConversationsFB } from "../store/conversations";
+import { getMessagesFB } from "../store/messages";
 
 
 export function ChatPage() {
   const { push } = useHistory();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const listenExistChat = ({ code }) => {
@@ -24,6 +23,13 @@ export function ChatPage() {
       document.removeEventListener("keydown", listenExistChat);
     };
   }, [push]);
+
+  useEffect(() => {
+    dispatch(getConversationsFB());
+    const r = dispatch(getMessagesFB());
+
+    console.log("r", r);
+  }, [dispatch]);
 
   return (
     <Switch>
